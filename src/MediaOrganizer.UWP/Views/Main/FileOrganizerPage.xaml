@@ -70,7 +70,7 @@
         <controls:DataGrid
             x:Name="dataGrid"
             Grid.Row="1"
-            Margin="12"
+            Margin="0,8"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             AreRowDetailsFrozen="False"
@@ -101,5 +101,47 @@
                 <controls:DataGridTextColumn Binding="{Binding ReplaceString}" Header="Replace String" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
+
+
+
+        <StackPanel Orientation="Horizontal">
+            <ListView
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="AliceBlue"
+                SelectionMode="Single">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Padding="0,8,8,8">
+                        <SymbolIcon
+                            Width="20"
+                            Height="20"
+                            Symbol="Add" />
+                    </Button>
+
+                    <TextBlock
+                        Margin="8,0"
+                        VerticalAlignment="Top"
+                        Text="Add Pattern" />
+                </StackPanel>
+
+
+                <!--<AppBarButton
+                    Command="{x:Bind Vm.SavePatternsCommand}"
+                    Icon="Save"
+                    Label="Save Patterns"
+                    Style="{StaticResource AppBarButtonRevealStyle}" />-->
+            </ListView>
+
+
+
+        </StackPanel>
+
     </StackPanel>
 </views:MvxWindowsPage>

@@ -38,7 +38,7 @@ namespace MediaOrganizer.UWP.Services
             return (T)value;
         }
 
-        public void SetValue(string key, string value)
+        public void SetValue<T>(string key, T value)
         {
             _applicationDataContainer.Values[key] = value;
         }

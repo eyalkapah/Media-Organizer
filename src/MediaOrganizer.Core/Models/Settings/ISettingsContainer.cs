@@ -14,6 +14,6 @@ namespace MediaOrganizer.Core.Models.Settings
 
         T GetValueOrDefault<T>(string valueName, T defaultValue);
 
-        void SetValue(string containerName, string value);
+        void SetValue<T>(string containerName, T value);
     }
 }

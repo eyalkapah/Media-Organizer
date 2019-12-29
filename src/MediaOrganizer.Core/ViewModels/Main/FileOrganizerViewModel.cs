@@ -18,6 +18,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
     {
         private readonly ISettingsService _settingsService;
         private string _destinationFolder;
+        private List<RegexPattern> _patterns;
         private string _sourceFolder;
 
         public string DestinationFolder
@@ -26,6 +27,13 @@ namespace MediaOrganizer.Core.ViewModels.Main
             set => SetProperty(ref _destinationFolder, value);
         }
 
+        public List<RegexPattern> Patterns
+        {
+            get => _patterns;
+            set => SetProperty(ref _patterns, value);
+        }
+
+        public ICommand SavePatternsCommand { get; set; }
         public ICommand SelectDestinationFolderCommand { get; set; }
         public ICommand SelectSourceFolderCommand { get; set; }
 
@@ -35,20 +43,13 @@ namespace MediaOrganizer.Core.ViewModels.Main
             set => SetProperty(ref _sourceFolder, value);
         }
 
-        private List<RegexPattern> _patterns;
-
-        public List<RegexPattern> Patterns
-        {
-            get => _patterns;
-            set => SetProperty(ref _patterns, value);
-        }
-
         // C'tor
         //
         public FileOrganizerViewModel(ISettingsService settingsService)
         {
             SelectSourceFolderCommand = new MvxCommand(SelectSourceFolderAsync);
             SelectDestinationFolderCommand = new MvxCommand(SelectDestinationFolderAsync);
+            SavePatternsCommand = new MvxCommand(SavePatterns);
 
             _settingsService = settingsService;
         }
@@ -59,20 +60,21 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
             SourceFolder = _settingsService.FolderSettings.SourceFolder;
             DestinationFolder = _settingsService.FolderSettings.DestinationFolder;
+            Patterns = _settingsService.FolderSettings.Patterns;
 
-            Patterns = new List<RegexPattern>
-            {
-                new RegexPattern("[](נתי מדיה[]"),
-                new RegexPattern("1080P"),
-                new RegexPattern("BluRay")
-            };
+            
+        }
+
+        private void SavePatterns()
+        {
+            _settingsService.FolderSettings.Patterns = Patterns;
         }
 
         private async void SelectDestinationFolderAsync()
         {
             var pickerService = Mvx.IoCProvider.Resolve<IPickerService>();
 
-            DestinationFolder = await pickerService.SelectFolderAsync();
+            DestinationFolder = await pickerService.SelectFolderAsync().ConfigureAwait(true);
 
             _settingsService.FolderSettings.DestinationFolder = DestinationFolder;
         }
@@ -81,7 +83,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
         {
             var pickerService = Mvx.IoCProvider.Resolve<IPickerService>();
 
-            SourceFolder = await pickerService.SelectFolderAsync();
+            SourceFolder = await pickerService.SelectFolderAsync().ConfigureAwait(true);
 
             _settingsService.FolderSettings.SourceFolder = SourceFolder;
         }

@@ -348,3 +348,9 @@ dotnet_naming_rule.suffix_method_with_async.style                               
 
 # IDE0059: Unnecessary assignment of a value
 csharp_style_unused_value_assignment_preference = discard_variable:none
+
+# CA2211: Non-constant fields should not be visible
+dotnet_diagnostic.CA2211.severity = none
+
+# CA2227: Collection properties should be read only
+dotnet_diagnostic.CA2227.severity = none
