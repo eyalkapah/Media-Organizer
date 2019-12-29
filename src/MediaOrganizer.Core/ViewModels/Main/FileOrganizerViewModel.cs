@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MediaOrganizer.Core.Interfaces;
+using MediaOrganizer.Core.Models.Settings;
 using Microsoft.Extensions.Configuration;
 using MvvmCross;
 using MvvmCross.Commands;
@@ -14,7 +15,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
 {
     public class FileOrganizerViewModel : BaseViewModel
     {
-        private readonly IConfiguration _configuration;
+        private readonly ISettingsService _settingsService;
         private string _destinationFolder;
         private string _sourceFolder;
 
@@ -35,20 +36,20 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
         // C'tor
         //
-        public FileOrganizerViewModel(IConfiguration configuration)
+        public FileOrganizerViewModel(ISettingsService settingsService)
         {
             SelectSourceFolderCommand = new MvxCommand(SelectSourceFolderAsync);
             SelectDestinationFolderCommand = new MvxCommand(SelectDestinationFolderAsync);
 
-            _configuration = configuration;
+            _settingsService = settingsService;
         }
 
         protected override void InitFromBundle(IMvxBundle parameters)
         {
             base.InitFromBundle(parameters);
 
-            SourceFolder = _configuration["SourceFolder"];
-            DestinationFolder = _configuration["DestinationFolder"];
+            SourceFolder = _settingsService.FolderSettings.SourceFolder;
+            DestinationFolder = _settingsService.FolderSettings.DestinationFolder;
         }
 
         private async void SelectDestinationFolderAsync()
@@ -57,9 +58,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
             DestinationFolder = await pickerService.SelectFolderAsync();
 
-            _configuration["DestinationFolder"] = DestinationFolder;
-
-            _configuration.save
+            _settingsService.FolderSettings.DestinationFolder = DestinationFolder;
         }
 
         private async void SelectSourceFolderAsync()
@@ -67,6 +66,8 @@ namespace MediaOrganizer.Core.ViewModels.Main
             var pickerService = Mvx.IoCProvider.Resolve<IPickerService>();
 
             SourceFolder = await pickerService.SelectFolderAsync();
+
+            _settingsService.FolderSettings.SourceFolder = SourceFolder;
         }
     }
 }

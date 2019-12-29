@@ -26,49 +26,49 @@ namespace MediaOrganizer.Core
             RegisterAppStart<MainViewModel>();
         }
 
-        public override Task Startup()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
+        //public override Task Startup()
+        //{
+        //    var assembly = Assembly.GetExecutingAssembly();
 
-            using (Stream stream = assembly.GetManifestResourceStream("MediaOrganizer.Core.appsettings.json"))
-            {
-                IHost host = new HostBuilder()
-                    .ConfigureHostConfiguration(c =>
-                    {
-                        c.AddJsonStream(stream);
-                    })
-                    .ConfigureServices((c, x) => ConfigureServices(c, x))
-                    .ConfigureLogging(l => l.AddConsole(abc =>
-                    {
-                        abc.DisableColors = true;
-                    }))
-                    .Build();
-            }
+        //    using (Stream stream = assembly.GetManifestResourceStream("MediaOrganizer.Core.appsettings.json"))
+        //    {
+        //        IHost host = new HostBuilder()
+        //            .ConfigureHostConfiguration(c =>
+        //            {
+        //                c.AddJsonStream(stream);
+        //            })
+        //            .ConfigureServices((c, x) => ConfigureServices(c, x))
+        //            .ConfigureLogging(l => l.AddConsole(abc =>
+        //            {
+        //                abc.DisableColors = true;
+        //            }))
+        //            .Build();
+        //    }
 
-            return base.Startup();
-        }
+        //    return base.Startup();
+        //}
 
-        private static void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
-        {
-            Mvx.IoCProvider.RegisterSingleton(typeof(IConfiguration), ctx.Configuration);
+        //private static void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
+        //{
+        //    Mvx.IoCProvider.RegisterSingleton(typeof(IConfiguration), ctx.Configuration);
 
-            var world = ctx.Configuration["Hello"];
-            var baseUrl = ctx.Configuration["BaseUrl"];
+        //    var world = ctx.Configuration["Hello"];
+        //    var baseUrl = ctx.Configuration["BaseUrl"];
 
-            if (ctx.HostingEnvironment.IsDevelopment())
-            {
-            }
+        //    if (ctx.HostingEnvironment.IsDevelopment())
+        //    {
+        //    }
 
-            services.AddHttpClient("AzureWebSites", client =>
-            {
-                client.BaseAddress = new Uri(baseUrl);
-            })
-                .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
-                {
-                    TimeSpan.FromSeconds(1),
-                    TimeSpan.FromSeconds(5),
-                    TimeSpan.FromSeconds(10),
-                }));
-        }
+        //    services.AddHttpClient("AzureWebSites", client =>
+        //    {
+        //        client.BaseAddress = new Uri(baseUrl);
+        //    })
+        //        .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
+        //        {
+        //            TimeSpan.FromSeconds(1),
+        //            TimeSpan.FromSeconds(5),
+        //            TimeSpan.FromSeconds(10),
+        //        }));
+        //}
     }
 }

@@ -1,11 +1,11 @@
-using System;
 using MediaOrganizer.Core.Interfaces;
+using MediaOrganizer.Core.Models.Settings;
 using MediaOrganizer.UWP.Services;
 using MvvmCross;
 using MvvmCross.IoC;
-using MvvmCross.Platforms.Uap.Core;
 using MvvmCross.Platforms.Uap.Views;
 using Windows.ApplicationModel.Activation;
+using Windows.Storage;
 
 namespace MediaOrganizer.UWP
 {
@@ -16,17 +16,18 @@ namespace MediaOrganizer.UWP
             base.OnLaunched(activationArgs);
 
             Mvx.IoCProvider.ConstructAndRegisterSingleton<IPickerService, PickerService>();
+            Mvx.IoCProvider.ConstructAndRegisterSingleton<ISettingsService, SettingsService>();
 
-            ReadSettings();
+            //ReadSettings();
         }
 
         private void ReadSettings()
         {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            var localSettings = ApplicationData.Current.LocalSettings;
+            var localFolder = ApplicationData.Current.LocalFolder;
 
             // Setting in a container
-            var container = localSettings.CreateContainer("FoldersContainer", Windows.Storage.ApplicationDataCreateDisposition.Always);
+            var container = localSettings.CreateContainer("FoldersContainer", ApplicationDataCreateDisposition.Always);
 
             if (localSettings.Containers.ContainsKey("FoldersContainer"))
             {

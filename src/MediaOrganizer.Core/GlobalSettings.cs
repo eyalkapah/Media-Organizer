@@ -10,6 +10,6 @@ namespace MediaOrganizer.Core
     {
         public const string DestinationFolder = "";
 
-        public const string SourceFolder = "";
+        public const string SourceFolder = "D:\\Downloads\\Telegram Desktop";
     }
 }

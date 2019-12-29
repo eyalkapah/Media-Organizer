@@ -97,6 +97,8 @@
     </Compile>
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\PickerService.cs" />
+    <Compile Include="Services\SettingsContainer.cs" />
+    <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
