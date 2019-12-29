@@ -3,4 +3,68 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MediaOrganizer.UWP"
-    RequestedTheme="Light" />
+    RequestedTheme="Light">
+    <local:MediaOrganizerApp.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="RowDetailsTemplate">
+                <StackPanel>
+                    <TextBlock Margin="20" Text="Here are the details for the selected mountain:" />
+                    <Grid Margin="20,10" Padding="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Text="Coordinates: " />
+                        <TextBlock
+                            Grid.Row="1"
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Text="Prominence (m): " />
+                        <TextBlock
+                            Grid.Row="2"
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Text="First Ascent (year): " />
+                        <TextBlock
+                            Grid.Row="3"
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Text="No. of ascents: " />
+                        <TextBlock
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            FontSize="13"
+                            Text="{Binding Coordinates}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            FontSize="13"
+                            Text="{Binding Prominence}" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            FontSize="13"
+                            Text="{Binding First_ascent}" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            FontSize="13"
+                            Text="{Binding Ascents}" />
+                    </Grid>
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+    </local:MediaOrganizerApp.Resources>
+</local:MediaOrganizerApp>

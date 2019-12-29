@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MediaOrganizer.Core.Interfaces;
+using MediaOrganizer.Core.Models;
 using MediaOrganizer.Core.Models.Settings;
 using Microsoft.Extensions.Configuration;
 using MvvmCross;
@@ -34,6 +35,14 @@ namespace MediaOrganizer.Core.ViewModels.Main
             set => SetProperty(ref _sourceFolder, value);
         }
 
+        private List<RegexPattern> _patterns;
+
+        public List<RegexPattern> Patterns
+        {
+            get => _patterns;
+            set => SetProperty(ref _patterns, value);
+        }
+
         // C'tor
         //
         public FileOrganizerViewModel(ISettingsService settingsService)
@@ -50,6 +59,13 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
             SourceFolder = _settingsService.FolderSettings.SourceFolder;
             DestinationFolder = _settingsService.FolderSettings.DestinationFolder;
+
+            Patterns = new List<RegexPattern>
+            {
+                new RegexPattern("[](נתי מדיה[]"),
+                new RegexPattern("1080P"),
+                new RegexPattern("BluRay")
+            };
         }
 
         private async void SelectDestinationFolderAsync()
