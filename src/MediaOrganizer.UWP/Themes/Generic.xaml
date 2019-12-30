@@ -4,10 +4,24 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ListViewButton">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}" />
+                    <StackPanel
+                        Margin="0,0,8,0"
+                        Padding="16"
+                        Orientation="Horizontal"
+                        PointerEntered="StackPanel_PointerEntered"
+                        PointerExited="StackPanel_PointerExited">
+                        <Button Margin="0" IsHitTestVisible="False">
+                            <SymbolIcon
+                                Width="20"
+                                Height="24"
+                                Symbol="Add" />
+                        </Button>
+
+                        <TextBlock
+                            Margin="8,0"
+                            VerticalAlignment="Top"
+                            Text="Add Pattern" />
+                    </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
