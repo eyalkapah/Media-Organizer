@@ -11,6 +11,7 @@ namespace MediaOrganizer.Core
     {
         public const string DestinationFolder = "";
 
+        public const string FileAction = "Move";
         public const string SourceFolder = "D:\\Downloads\\Telegram Desktop";
 
         public static List<RegexPattern> Patterns = new List<RegexPattern>

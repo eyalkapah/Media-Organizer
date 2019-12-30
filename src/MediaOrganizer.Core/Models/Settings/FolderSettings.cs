@@ -12,6 +12,12 @@ namespace MediaOrganizer.Core.Models.Settings
             set => _container.SetValue(nameof(DestinationFolder), value);
         }
 
+        public string FileAction
+        {
+            get => _container.GetValueOrDefault(nameof(FileAction), GlobalSettings.FileAction);
+            set => _container.SetValue(nameof(FileAction), value);
+        }
+
         public List<RegexPattern> Patterns
         {
             get => _container.GetValueOrDefault(nameof(Patterns), GlobalSettings.Patterns);

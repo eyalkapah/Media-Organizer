@@ -4,23 +4,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ListViewButton">
+
                     <StackPanel
-                        Margin="0,0,8,0"
-                        Padding="16"
-                        Orientation="Horizontal"
-                        PointerEntered="StackPanel_PointerEntered"
-                        PointerExited="StackPanel_PointerExited">
+                        Name="PART_StackPanel"
+                        Margin="{TemplateBinding Margin}"
+                        Padding="8"
+                        Background="{TemplateBinding Background}"
+                        IsHitTestVisible="True"
+                        Orientation="Horizontal">
                         <Button Margin="0" IsHitTestVisible="False">
                             <SymbolIcon
-                                Width="20"
-                                Height="24"
-                                Symbol="Add" />
+                                Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IconWidth}"
+                                Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IconHeight}"
+                                Symbol="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Symbol}" />
                         </Button>
 
                         <TextBlock
                             Margin="8,0"
                             VerticalAlignment="Top"
-                            Text="Add Pattern" />
+                            Text="{TemplateBinding Text}" />
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>

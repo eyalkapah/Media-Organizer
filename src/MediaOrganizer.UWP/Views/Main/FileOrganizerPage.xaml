@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:listviewbutton="using:MediaOrganizer.UWP.CustomControls.ListViewButton"
     xmlns:local="using:MediaOrganizer.UWP.Views.Main"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:MediaOrganizer.Core.Models"
@@ -12,7 +13,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel>
+        <StackPanel Padding="0,0,32,0">
             <TextBlock
                 Margin="0"
                 Style="{ThemeResource SubheaderTextBlockStyle}"
@@ -63,15 +64,15 @@
                 Text="File Naming" />
 
             <TextBlock
-                Margin="0,24,0,0"
+                Margin="0,8,0,0"
                 FontWeight="Normal"
                 Style="{ThemeResource BaseTextBlockStyle}"
                 Text="Edit the downloaded file name to reduce unwanted content such as watermarks, encoding description etc'. Patterns with no replace string specified will be removed." />
 
             <controls:DataGrid
                 x:Name="dataGrid"
-                MinHeight="150"
-                Margin="0,8"
+                MinHeight="100"
+                Margin="0,16,0,8"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 AreRowDetailsFrozen="False"
@@ -102,48 +103,45 @@
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
 
-            <!--<ListView IsItemClickEnabled="True" SelectionMode="None">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="Padding" Value="0" />
-                    </Style>
-                </ListView.ItemContainerStyle>-->
+            <listviewbutton:ListViewButton
+                Background="Transparent"
+                HoverBrush="#EFEFEF"
+                IconHeight="24"
+                IconWidth="20"
+                Symbol="Add"
+                Tapped="{x:Bind Vm.AddPattern}"
+                Text="Add Pattern" />
 
-            <StackPanel
-                Margin="0,0,8,0"
-                Padding="16"
-                Orientation="Horizontal"
-                PointerEntered="StackPanel_PointerEntered"
-                PointerExited="StackPanel_PointerExited"
-                Tapped="{x:Bind Vm.AddPattern}">
-                <Button Margin="0" IsHitTestVisible="False">
-                    <SymbolIcon
-                        Width="20"
-                        Height="24"
-                        Symbol="Add" />
-                </Button>
+            <listviewbutton:ListViewButton
+                Background="Transparent"
+                HoverBrush="#EFEFEF"
+                IconHeight="24"
+                IconWidth="20"
+                Symbol="Save"
+                Tapped="{x:Bind Vm.SavePatterns}"
+                Text="Save" />
 
-                <TextBlock
-                    Margin="8,0"
-                    VerticalAlignment="Top"
-                    Text="Add Pattern" />
-            </StackPanel>
+            <TextBlock
+                Margin="0,32,0,0"
+                Style="{ThemeResource SubheaderTextBlockStyle}"
+                Text="Action" />
 
-            <StackPanel Padding="16" Orientation="Horizontal">
-                <Button Margin="0" IsHitTestVisible="False">
-                    <SymbolIcon
-                        Width="20"
-                        Height="24"
-                        Symbol="Save" />
-                </Button>
+            <TextBlock
+                Margin="0,16,0,0"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="File Management" />
 
-                <TextBlock
-                    Margin="8,0"
-                    VerticalAlignment="Top"
-                    Text="Save" />
-            </StackPanel>
-            <!--</ListView>-->
+            <TextBlock
+                Margin="0,8,0,0"
+                FontWeight="Normal"
+                Style="{ThemeResource BaseTextBlockStyle}"
+                Text="Select which aciton to take when detecting a media file." />
+
+            <ComboBox
+                Width="250"
+                Margin="0,16,0,8"
+                ItemsSource="{x:Bind Vm.FileActions}"
+                SelectedItem="{x:Bind Vm.SelectedFileAction, Mode=TwoWay}" />
         </StackPanel>
     </ScrollViewer>
 </views:MvxWindowsPage>

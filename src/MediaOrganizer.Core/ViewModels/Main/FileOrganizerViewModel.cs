@@ -21,19 +21,8 @@ namespace MediaOrganizer.Core.ViewModels.Main
         private readonly ISettingsService _settingsService;
         private string _destinationFolder;
         private List<RegexPattern> _patterns;
+        private string _selectedFileAction;
         private string _sourceFolder;
-
-        // C'tor
-        //
-        public FileOrganizerViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, ISettingsService settingsService) : base(logProvider, navigationService)
-        {
-            SelectSourceFolderCommand = new MvxCommand(SelectSourceFolderAsync);
-            SelectDestinationFolderCommand = new MvxCommand(SelectDestinationFolderAsync);
-            SavePatternsCommand = new MvxCommand(SavePatterns);
-            AddPatternCommand = new MvxCommand(AddPattern);
-
-            _settingsService = settingsService;
-        }
 
         public string DestinationFolder
         {
@@ -41,16 +30,23 @@ namespace MediaOrganizer.Core.ViewModels.Main
             set => SetProperty(ref _destinationFolder, value);
         }
 
+        public List<string> FileActions { get; set; }
+
         public List<RegexPattern> Patterns
         {
             get => _patterns;
             set => SetProperty(ref _patterns, value);
         }
 
-        public ICommand SavePatternsCommand { get; set; }
         public ICommand SelectDestinationFolderCommand { get; set; }
+
+        public string SelectedFileAction
+        {
+            get => _selectedFileAction;
+            set => SetProperty(ref _selectedFileAction, value, () => OnFileActionChanged(value));
+        }
+
         public ICommand SelectSourceFolderCommand { get; set; }
-        public ICommand AddPatternCommand { get; set; }
 
         public string SourceFolder
         {
@@ -58,9 +54,26 @@ namespace MediaOrganizer.Core.ViewModels.Main
             set => SetProperty(ref _sourceFolder, value);
         }
 
+        // C'tor
+        //
+        public FileOrganizerViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, ISettingsService settingsService) : base(logProvider, navigationService)
+        {
+            SelectSourceFolderCommand = new MvxCommand(SelectSourceFolderAsync);
+            SelectDestinationFolderCommand = new MvxCommand(SelectDestinationFolderAsync);
+
+            _settingsService = settingsService;
+
+            FileActions = new List<string> { "Copy", "Move" };
+        }
+
         public void AddPattern()
         {
             NavigationService.Navigate<AddPatternDialogViewModel>();
+        }
+
+        public void SavePatterns()
+        {
+            _settingsService.FolderSettings.Patterns = Patterns;
         }
 
         protected override void InitFromBundle(IMvxBundle parameters)
@@ -70,11 +83,12 @@ namespace MediaOrganizer.Core.ViewModels.Main
             SourceFolder = _settingsService.FolderSettings.SourceFolder;
             DestinationFolder = _settingsService.FolderSettings.DestinationFolder;
             Patterns = _settingsService.FolderSettings.Patterns;
+            SelectedFileAction = _settingsService.FolderSettings.FileAction;
         }
 
-        private void SavePatterns()
+        private void OnFileActionChanged(string action)
         {
-            _settingsService.FolderSettings.Patterns = Patterns;
+            _settingsService.FolderSettings.FileAction = action;
         }
 
         private async void SelectDestinationFolderAsync()
