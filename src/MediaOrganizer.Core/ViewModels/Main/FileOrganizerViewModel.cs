@@ -10,16 +10,30 @@ using MediaOrganizer.Core.Models.Settings;
 using Microsoft.Extensions.Configuration;
 using MvvmCross;
 using MvvmCross.Commands;
+using MvvmCross.Logging;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 
 namespace MediaOrganizer.Core.ViewModels.Main
 {
-    public class FileOrganizerViewModel : BaseViewModel
+    public class FileOrganizerViewModel : MvxNavigationViewModel
     {
         private readonly ISettingsService _settingsService;
         private string _destinationFolder;
         private List<RegexPattern> _patterns;
         private string _sourceFolder;
+
+        // C'tor
+        //
+        public FileOrganizerViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, ISettingsService settingsService) : base(logProvider, navigationService)
+        {
+            SelectSourceFolderCommand = new MvxCommand(SelectSourceFolderAsync);
+            SelectDestinationFolderCommand = new MvxCommand(SelectDestinationFolderAsync);
+            SavePatternsCommand = new MvxCommand(SavePatterns);
+            AddPatternCommand = new MvxCommand(AddPattern);
+
+            _settingsService = settingsService;
+        }
 
         public string DestinationFolder
         {
@@ -36,6 +50,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
         public ICommand SavePatternsCommand { get; set; }
         public ICommand SelectDestinationFolderCommand { get; set; }
         public ICommand SelectSourceFolderCommand { get; set; }
+        public ICommand AddPatternCommand { get; set; }
 
         public string SourceFolder
         {
@@ -43,15 +58,9 @@ namespace MediaOrganizer.Core.ViewModels.Main
             set => SetProperty(ref _sourceFolder, value);
         }
 
-        // C'tor
-        //
-        public FileOrganizerViewModel(ISettingsService settingsService)
+        public void AddPattern()
         {
-            SelectSourceFolderCommand = new MvxCommand(SelectSourceFolderAsync);
-            SelectDestinationFolderCommand = new MvxCommand(SelectDestinationFolderAsync);
-            SavePatternsCommand = new MvxCommand(SavePatterns);
-
-            _settingsService = settingsService;
+            NavigationService.Navigate<AddPatternDialogViewModel>();
         }
 
         protected override void InitFromBundle(IMvxBundle parameters)
@@ -61,8 +70,6 @@ namespace MediaOrganizer.Core.ViewModels.Main
             SourceFolder = _settingsService.FolderSettings.SourceFolder;
             DestinationFolder = _settingsService.FolderSettings.DestinationFolder;
             Patterns = _settingsService.FolderSettings.Patterns;
-
-            
         }
 
         private void SavePatterns()

@@ -1,22 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MvvmCross.Logging;
 using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 
 namespace MediaOrganizer.Core.ViewModels.Main
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : MvxNavigationViewModel
     {
-        private readonly IMvxNavigationService _navigationService;
-
-        public MainViewModel(IMvxNavigationService navigationService)
+        public MainViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
-            _navigationService = navigationService;
         }
 
         public void NavigateToFileOrgnizerPage()
         {
-            _navigationService.Navigate<FileOrganizerViewModel>();
+            NavigationService.Navigate<FileOrganizerViewModel>();
         }
     }
 }
