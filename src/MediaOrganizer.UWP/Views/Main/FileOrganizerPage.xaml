@@ -109,7 +109,7 @@
                 IconHeight="24"
                 IconWidth="20"
                 Symbol="Add"
-                Tapped="{x:Bind Vm.AddPattern}"
+                Tapped="{x:Bind Vm.AddPatternAsync}"
                 Text="Add Pattern" />
 
             <listviewbutton:ListViewButton

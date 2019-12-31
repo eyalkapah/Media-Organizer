@@ -12,11 +12,12 @@ namespace MediaOrganizer.Core.Models
 
         public string Pattern { get; private set; }
         public string ReplaceString { get; set; }
+        public string Word { get; set; }
 
-        public RegexPattern(string pattern, string replaceString = null)
+        public RegexPattern(string word, string pattern, string replaceString = null)
         {
             Guid = Guid.NewGuid();
-
+            Word = word;
             Pattern = pattern;
             ReplaceString = replaceString;
         }

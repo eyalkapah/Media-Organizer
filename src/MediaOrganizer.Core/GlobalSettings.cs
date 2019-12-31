@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MediaOrganizer.Core.Models;
 
 namespace MediaOrganizer.Core
@@ -16,7 +12,7 @@ namespace MediaOrganizer.Core
 
         public static List<RegexPattern> Patterns = new List<RegexPattern>
         {
-            new RegexPattern("נתי מדיה")
+            new RegexPattern("Nati Media", "נתי מדיה")
         };
     }
 }

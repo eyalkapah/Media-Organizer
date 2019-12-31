@@ -5,4 +5,5 @@
 
     <local:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter" />
     <local:IsNullOrEmptyInverseConverter x:Key="IsNullOrEmptyInverseConverter" />
+    <local:IsNullOrEmptyInverseToVisibilityConverter x:Key="IsNullOrEmptyInverseToVisibilityConverter" />
 </ResourceDictionary>

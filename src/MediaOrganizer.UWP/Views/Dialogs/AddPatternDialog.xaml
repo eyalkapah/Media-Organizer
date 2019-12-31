@@ -4,56 +4,84 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Interactions="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:actions="using:MediaOrganizer.UWP.Actions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="using:MvvmCross.Platforms.Uap.Views"
     Title="{x:Bind Vm.Title}"
-    PrimaryButtonCommand="{x:Bind Vm.OkCommand}"
-    PrimaryButtonText="Ok"
-    SecondaryButtonText="Cancel"
     mc:Ignorable="d">
 
     <StackPanel>
         <TextBox
+            x:Name="WordTextBox"
             Margin="8,8,8,0"
             Header="Word:"
             PlaceholderText="e.g. BluRay"
-            Text="{x:Bind Vm.Word, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            Text="{x:Bind Vm.Word, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <Interactivity:Interaction.Behaviors>
 
-        <Border Margin="8,0,8,8" Background="Red">
+                <Interactions:DataTriggerBehavior
+                    Binding="{Binding Visibility, ElementName=WordErrorMessageBorder}"
+                    ComparisonCondition="Equal"
+                    Value="Visible">
+
+                    <Interactions:ChangePropertyAction PropertyName="BorderBrush" Value="Red" />
+                </Interactions:DataTriggerBehavior>
+
+                <Interactions:DataTriggerBehavior
+                    Binding="{Binding Visibility, ElementName=WordErrorMessageBorder}"
+                    ComparisonCondition="NotEqual"
+                    Value="Visible">
+
+                    <actions:ClearTextBoxBorderBrushAction />
+                </Interactions:DataTriggerBehavior>
+            </Interactivity:Interaction.Behaviors>
+        </TextBox>
+
+        <Border
+            Name="WordErrorMessageBorder"
+            Margin="8,0,8,0"
+            Background="Red"
+            BorderBrush="Red"
+            BorderThickness="2"
+            Visibility="{x:Bind Vm.WordErrorMessage, Mode=OneWay, Converter={StaticResource IsNullOrEmptyInverseToVisibilityConverter}}">
             <TextBlock
-                x:Name="WordErrorMessageTextBlock"
                 Padding="8,4,8,4"
                 FontSize="10"
                 Foreground="White"
-                Text="{x:Bind Vm.WordErrorMessage}"
-                Visibility="Collapsed">
-                <Interactivity:Interaction.Behaviors>
-
-                    <Interactions:DataTriggerBehavior
-                        Binding="{x:Bind Vm.WordErrorMessage}"
-                        ComparisonCondition="NotEqual"
-                        Value="">
-
-                        <Interactions:ChangePropertyAction
-                            PropertyName="Visibility"
-                            TargetObject="{Binding ElementName=WordErrorMessageTextBlock}"
-                            Value="Visible" />
-                    </Interactions:DataTriggerBehavior>
-                </Interactivity:Interaction.Behaviors>
-            </TextBlock>
+                Text="{x:Bind Vm.WordErrorMessage, Mode=OneWay}" />
         </Border>
 
         <TextBox
             Margin="8"
             Header="Regex:"
             PlaceholderText="e.g. [-](BluRay)[-]"
-            Text="{x:Bind Vm.Regex, Mode=TwoWay}" />
+            Text="{x:Bind Vm.Regex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBox
             Margin="8"
             Header="Replace String:"
             PlaceholderText="e.g. Blu-Ray"
-            Text="{x:Bind Vm.Replace, Mode=TwoWay}" />
+            Text="{x:Bind Vm.ReplaceString, Mode=TwoWay}" />
+
+        <Grid Margin="0,32,0,16" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button
+                Margin="8"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind Vm.OkCommand}"
+                Content="OK"
+                IsEnabled="{x:Bind Vm.IsFormValid, Mode=OneWay}" />
+
+            <Button
+                Grid.Column="1"
+                Margin="8"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind Vm.CancelCommand}"
+                Content="Cancel" />
+        </Grid>
     </StackPanel>
 </views:MvxWindowsContentDialog>

@@ -92,11 +92,13 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Actions\ClearTextBoxBorderBrushAction.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\IsNullOrEmptyConverter.cs" />
     <Compile Include="Converters\IsNullOrEmptyInverseConverter.cs" />
+    <Compile Include="Converters\IsNullOrEmptyInverseToVisibilityConverter.cs" />
     <Compile Include="CustomControls\ListViewButton\ListViewButton.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\PickerService.cs" />

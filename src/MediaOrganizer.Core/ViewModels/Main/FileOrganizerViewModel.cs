@@ -66,9 +66,9 @@ namespace MediaOrganizer.Core.ViewModels.Main
             FileActions = new List<string> { "Copy", "Move" };
         }
 
-        public void AddPattern()
+        public async void AddPatternAsync()
         {
-            NavigationService.Navigate<AddPatternDialogViewModel>();
+            var result = await NavigationService.Navigate<AddPatternDialogViewModel, RegexPattern>().ConfigureAwait(true);
         }
 
         public void SavePatterns()
