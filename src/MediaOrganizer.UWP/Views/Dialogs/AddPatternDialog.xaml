@@ -2,16 +2,58 @@
     x:Class="MediaOrganizer.UWP.Views.Dialogs.AddPatternDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Interactions="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:MediaOrganizer.UWP.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="using:MvvmCross.Platforms.Uap.Views"
     Title="{x:Bind Vm.Title}"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    PrimaryButtonText="Button1"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
-    SecondaryButtonText="Button2"
+    PrimaryButtonCommand="{x:Bind Vm.OkCommand}"
+    PrimaryButtonText="Ok"
+    SecondaryButtonText="Cancel"
     mc:Ignorable="d">
 
-    <Grid />
+    <StackPanel>
+        <TextBox
+            Margin="8,8,8,0"
+            Header="Word:"
+            PlaceholderText="e.g. BluRay"
+            Text="{x:Bind Vm.Word, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Border Margin="8,0,8,8" Background="Red">
+            <TextBlock
+                x:Name="WordErrorMessageTextBlock"
+                Padding="8,4,8,4"
+                FontSize="10"
+                Foreground="White"
+                Text="{x:Bind Vm.WordErrorMessage}"
+                Visibility="Collapsed">
+                <Interactivity:Interaction.Behaviors>
+
+                    <Interactions:DataTriggerBehavior
+                        Binding="{x:Bind Vm.WordErrorMessage}"
+                        ComparisonCondition="NotEqual"
+                        Value="">
+
+                        <Interactions:ChangePropertyAction
+                            PropertyName="Visibility"
+                            TargetObject="{Binding ElementName=WordErrorMessageTextBlock}"
+                            Value="Visible" />
+                    </Interactions:DataTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+            </TextBlock>
+        </Border>
+
+        <TextBox
+            Margin="8"
+            Header="Regex:"
+            PlaceholderText="e.g. [-](BluRay)[-]"
+            Text="{x:Bind Vm.Regex, Mode=TwoWay}" />
+
+        <TextBox
+            Margin="8"
+            Header="Replace String:"
+            PlaceholderText="e.g. Blu-Ray"
+            Text="{x:Bind Vm.Replace, Mode=TwoWay}" />
+    </StackPanel>
 </views:MvxWindowsContentDialog>
