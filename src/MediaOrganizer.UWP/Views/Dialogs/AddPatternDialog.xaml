@@ -7,56 +7,25 @@
     xmlns:actions="using:MediaOrganizer.UWP.Actions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:validated="using:MediaOrganizer.UWP.CustomControls.ValidatedTextBoxControl"
     xmlns:views="using:MvvmCross.Platforms.Uap.Views"
     Title="{x:Bind Vm.Title}"
     mc:Ignorable="d">
 
     <StackPanel>
-        <TextBox
-            x:Name="WordTextBox"
+        <validated:ValidatedTextBox
             Margin="8,8,8,0"
+            ErrorMessage="{x:Bind Vm.WordErrorMessage, Mode=OneWay}"
             Header="Word:"
-            PlaceholderText="e.g. BluRay"
-            Text="{x:Bind Vm.Word, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <Interactivity:Interaction.Behaviors>
+            Placeholder="e.g. BluRay"
+            Text="{x:Bind Vm.Word, Mode=TwoWay}" />
 
-                <Interactions:DataTriggerBehavior
-                    Binding="{Binding Visibility, ElementName=WordErrorMessageBorder}"
-                    ComparisonCondition="Equal"
-                    Value="Visible">
-
-                    <Interactions:ChangePropertyAction PropertyName="BorderBrush" Value="Red" />
-                </Interactions:DataTriggerBehavior>
-
-                <Interactions:DataTriggerBehavior
-                    Binding="{Binding Visibility, ElementName=WordErrorMessageBorder}"
-                    ComparisonCondition="NotEqual"
-                    Value="Visible">
-
-                    <actions:ClearTextBoxBorderBrushAction />
-                </Interactions:DataTriggerBehavior>
-            </Interactivity:Interaction.Behaviors>
-        </TextBox>
-
-        <Border
-            Name="WordErrorMessageBorder"
-            Margin="8,0,8,0"
-            Background="Red"
-            BorderBrush="Red"
-            BorderThickness="2"
-            Visibility="{x:Bind Vm.WordErrorMessage, Mode=OneWay, Converter={StaticResource IsNullOrEmptyInverseToVisibilityConverter}}">
-            <TextBlock
-                Padding="8,4,8,4"
-                FontSize="10"
-                Foreground="White"
-                Text="{x:Bind Vm.WordErrorMessage, Mode=OneWay}" />
-        </Border>
-
-        <TextBox
+        <validated:ValidatedTextBox
             Margin="8"
+            ErrorMessage="{x:Bind Vm.RegexErrorMessage, Mode=OneWay}"
             Header="Regex:"
-            PlaceholderText="e.g. [-](BluRay)[-]"
-            Text="{x:Bind Vm.Regex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            Placeholder="e.g. [-](BluRay)[-]"
+            Text="{x:Bind Vm.Regex, Mode=TwoWay}" />
 
         <TextBox
             Margin="8"

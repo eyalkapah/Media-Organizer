@@ -10,6 +10,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Converters/Converters.xaml" />
                 <ResourceDictionary Source="Themes/Generic.xaml" />
+                <ResourceDictionary Source="CustomControls/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="RowDetailsTemplate">
                 <StackPanel>
