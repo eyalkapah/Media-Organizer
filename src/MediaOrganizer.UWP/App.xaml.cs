@@ -15,9 +15,11 @@ namespace MediaOrganizer.UWP
     {
         private SettingsService _settingsService;
 
-        protected async override Task EnteringBackground(IMvxSuspensionManager suspensionManager)
+        protected override Task EnteringBackground(IMvxSuspensionManager suspensionManager)
         {
-            await _settingsService.SaveAsync();
+            _settingsService.Save();
+
+            return Task.CompletedTask;
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs activationArgs)
@@ -26,7 +28,7 @@ namespace MediaOrganizer.UWP
 
             Mvx.IoCProvider.ConstructAndRegisterSingleton<IPickerService, PickerService>();
 
-            _settingsService = new SettingsService();
+            _settingsService = new SettingsService(ApplicationData.Current.LocalFolder.Path);
 
             Mvx.IoCProvider.RegisterSingleton(typeof(ISettingsService), _settingsService);
         }

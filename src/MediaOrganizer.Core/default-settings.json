@@ -1,0 +1,15 @@
+﻿{
+  "folder_settings": {
+    "destination_folder": "",
+    "file_action": "Move",
+    "patterns": [
+      {
+        "guid": "f53a3931-bb7d-44c0-afae-033ccd500206",
+        "pattern": "נתי מדיה",
+        "replace_string": null,
+        "word": "Nati Media"
+      }
+    ],
+    "source_folder": "D:\\Downloads\\Telegram Desktop"
+  }
+}
