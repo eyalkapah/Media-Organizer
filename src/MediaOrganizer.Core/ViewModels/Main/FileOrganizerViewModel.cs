@@ -20,9 +20,13 @@ namespace MediaOrganizer.Core.ViewModels.Main
     {
         private readonly ISettingsService _settingsService;
         private string _destinationFolder;
-        private List<RegexPattern> _patterns;
+        private string _saveErrorMessage;
         private string _selectedFileAction;
+        private PatternViewModel _selectedPattern;
         private string _sourceFolder;
+
+        public ICommand AddPatternCommand { get; set; }
+        public ICommand DeletePatternCommand { get; set; }
 
         public string DestinationFolder
         {
@@ -31,11 +35,13 @@ namespace MediaOrganizer.Core.ViewModels.Main
         }
 
         public List<string> FileActions { get; set; }
+        public MvxObservableCollection<PatternViewModel> Patterns { get; set; }
+        public ICommand SaveAllPatternsCommand { get; set; }
 
-        public List<RegexPattern> Patterns
+        public string SaveErrorMessage
         {
-            get => _patterns;
-            set => SetProperty(ref _patterns, value);
+            get => _saveErrorMessage;
+            set => SetProperty(ref _saveErrorMessage, value);
         }
 
         public ICommand SelectDestinationFolderCommand { get; set; }
@@ -44,6 +50,12 @@ namespace MediaOrganizer.Core.ViewModels.Main
         {
             get => _selectedFileAction;
             set => SetProperty(ref _selectedFileAction, value, () => OnFileActionChanged(value));
+        }
+
+        public PatternViewModel SelectedPattern
+        {
+            get => _selectedPattern;
+            set => SetProperty(ref _selectedPattern, value);
         }
 
         public ICommand SelectSourceFolderCommand { get; set; }
@@ -58,8 +70,13 @@ namespace MediaOrganizer.Core.ViewModels.Main
         //
         public FileOrganizerViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, ISettingsService settingsService) : base(logProvider, navigationService)
         {
+            Patterns = new MvxObservableCollection<PatternViewModel>();
+
             SelectSourceFolderCommand = new MvxCommand(SelectSourceFolderAsync);
             SelectDestinationFolderCommand = new MvxCommand(SelectDestinationFolderAsync);
+            AddPatternCommand = new MvxCommand(AddPatternAsync);
+            SaveAllPatternsCommand = new MvxCommand(SaveAllPatterns);
+            DeletePatternCommand = new MvxCommand(DeletePattern);
 
             _settingsService = settingsService;
 
@@ -69,26 +86,48 @@ namespace MediaOrganizer.Core.ViewModels.Main
         public async void AddPatternAsync()
         {
             var result = await NavigationService.Navigate<AddPatternDialogViewModel, RegexPattern>().ConfigureAwait(true);
+
+            if (result != null)
+            {
+                Patterns.Add(new PatternViewModel(result));
+            }
         }
 
-        public void SavePatterns()
+        public void SaveAllPatterns()
         {
-            _settingsService.FolderSettings.Patterns = Patterns;
+            if (Patterns.Any(p => string.IsNullOrEmpty(p.Word) || string.IsNullOrEmpty(p.Pattern)))
+            {
+                SaveErrorMessage = "Word and Pattern must be specified.";
+            }
+            else
+            {
+                _settingsService.Instance.FolderSettings.Patterns = Patterns.Select(p => new RegexPattern(p.Word, p.Pattern, p.ReplaceString)).ToList();
+
+                SaveErrorMessage = null;
+            }
         }
 
         protected override void InitFromBundle(IMvxBundle parameters)
         {
             base.InitFromBundle(parameters);
 
-            SourceFolder = _settingsService.FolderSettings.SourceFolder;
-            DestinationFolder = _settingsService.FolderSettings.DestinationFolder;
-            Patterns = _settingsService.FolderSettings.Patterns;
-            SelectedFileAction = _settingsService.FolderSettings.FileAction;
+            var folderSettings = _settingsService.Instance.FolderSettings;
+            SourceFolder = folderSettings.SourceFolder;
+            DestinationFolder = folderSettings.DestinationFolder;
+            folderSettings.Patterns.ForEach(p => Patterns.Add(new PatternViewModel(p)));
+            SelectedFileAction = folderSettings.FileAction;
+        }
+
+        private void DeletePattern()
+        {
+            Patterns.Remove(Patterns.First(p => p.Guid != SelectedPattern.Guid));
+
+            SelectedPattern = null;
         }
 
         private void OnFileActionChanged(string action)
         {
-            _settingsService.FolderSettings.FileAction = action;
+            _settingsService.Instance.FolderSettings.FileAction = action;
         }
 
         private async void SelectDestinationFolderAsync()
@@ -97,7 +136,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
             DestinationFolder = await pickerService.SelectFolderAsync().ConfigureAwait(true);
 
-            _settingsService.FolderSettings.DestinationFolder = DestinationFolder;
+            _settingsService.Instance.FolderSettings.DestinationFolder = DestinationFolder;
         }
 
         private async void SelectSourceFolderAsync()
@@ -106,7 +145,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
             SourceFolder = await pickerService.SelectFolderAsync().ConfigureAwait(true);
 
-            _settingsService.FolderSettings.SourceFolder = SourceFolder;
+            _settingsService.Instance.FolderSettings.SourceFolder = SourceFolder;
         }
     }
 }

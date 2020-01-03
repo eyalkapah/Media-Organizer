@@ -8,6 +8,8 @@ namespace MediaOrganizer.Core.Models.Settings
 {
     public interface ISettingsService
     {
-        FolderSettings FolderSettings { get; set; }
+        SettingsModel Instance { get; }
+
+        Task SaveAsync();
     }
 }

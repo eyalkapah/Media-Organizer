@@ -83,7 +83,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
         public override Task Initialize()
         {
-            Patterns = _settingsService.FolderSettings.Patterns;
+            Patterns = _settingsService.Instance.FolderSettings.Patterns;
 
             return Task.CompletedTask;
         }

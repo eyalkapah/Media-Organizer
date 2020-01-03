@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace MediaOrganizer.Core.Models.Settings
 {
@@ -6,33 +8,45 @@ namespace MediaOrganizer.Core.Models.Settings
     {
         private readonly ISettingsContainer _container;
 
-        public string DestinationFolder
-        {
-            get => _container.GetValueOrDefault(nameof(DestinationFolder), GlobalSettings.DestinationFolder);
-            set => _container.SetValue(nameof(DestinationFolder), value);
-        }
+        [JsonProperty("destination_folder")]
+        public string DestinationFolder { get; set; }
 
-        public string FileAction
-        {
-            get => _container.GetValueOrDefault(nameof(FileAction), GlobalSettings.FileAction);
-            set => _container.SetValue(nameof(FileAction), value);
-        }
+        [JsonProperty("file_action")]
+        public string FileAction { get; set; }
 
-        public List<RegexPattern> Patterns
-        {
-            get => _container.GetValueOrDefault(nameof(Patterns), GlobalSettings.Patterns);
-            set => _container.SetValue(nameof(Patterns), value);
-        }
+        [JsonProperty("patterns")]
+        public List<RegexPattern> Patterns { get; set; }
 
-        public string SourceFolder
-        {
-            get => _container.GetValueOrDefault(nameof(SourceFolder), GlobalSettings.SourceFolder);
-            set => _container.SetValue(nameof(SourceFolder), value);
-        }
+        [JsonProperty("source_folder")]
+        public string SourceFolder { get; set; }
 
-        public FolderSettings(ISettingsContainer container)
-        {
-            _container = container;
-        }
+        //public string DestinationFolder
+        //{
+        //    get => _container.GetValueOrDefault(nameof(DestinationFolder), GlobalSettings.DestinationFolder);
+        //    set => _container.SetValue(nameof(DestinationFolder), value);
+        //}
+
+        //public string FileAction
+        //{
+        //    get => _container.GetValueOrDefault(nameof(FileAction), GlobalSettings.FileAction);
+        //    set => _container.SetValue(nameof(FileAction), value);
+        //}
+
+        //public List<RegexPattern> Patterns
+        //{
+        //    get => _container.GetValueOrDefault(nameof(Patterns), GlobalSettings.Patterns);
+        //    set => _container.SetValue(nameof(Patterns), value);
+        //}
+
+        //public string SourceFolder
+        //{
+        //    get => _container.GetValueOrDefault(nameof(SourceFolder), GlobalSettings.SourceFolder);
+        //    set => _container.SetValue(nameof(SourceFolder), value);
+        //}
+
+        //public FolderSettings(ISettingsContainer container)
+        //{
+        //    _container = container;
+        //}
     }
 }

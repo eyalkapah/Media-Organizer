@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MediaOrganizer.Core.Models;
 using MediaOrganizer.Core.Models.Settings;
 using Windows.Storage;
 

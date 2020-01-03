@@ -70,7 +70,7 @@
                 Text="Edit the downloaded file name to reduce unwanted content such as watermarks, encoding description etc'. Patterns with no replace string specified will be removed." />
 
             <controls:DataGrid
-                x:Name="dataGrid"
+                x:Name="PatternsDataGrid"
                 MinHeight="100"
                 Margin="0,16,0,8"
                 HorizontalAlignment="Stretch"
@@ -90,10 +90,12 @@
                 MaxColumnWidth="400"
                 RowDetailsVisibilityMode="Collapsed"
                 RowGroupHeaderPropertyNameAlternative="Range"
+                SelectedItem="{x:Bind Vm.SelectedPattern, Mode=TwoWay}"
                 SelectionMode="Extended"
                 VerticalScrollBarVisibility="Visible">
 
                 <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn Binding="{Binding Path=Word}" Header="Word" />
                     <controls:DataGridTextColumn Binding="{Binding Path=Pattern}" Header="Pattern" />
                     <!--<controls:DataGridComboBoxColumn
                     Binding="{Binding Mountain}"
@@ -103,7 +105,26 @@
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
 
-            <listviewbutton:ListViewButton
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton
+                    Command="{x:Bind Vm.AddPatternCommand}"
+                    Icon="Add"
+                    Label="Add item"
+                    Style="{StaticResource AppBarButtonRevealStyle}" />
+                <AppBarButton
+                    Command="{x:Bind Vm.DeletePatternCommand}"
+                    Icon="Delete"
+                    IsEnabled="{x:Bind PatternsDataGrid.SelectedItem, Converter={StaticResource IsNullOrEmptyInverseConverter}, Mode=OneWay}"
+                    Label="Delete"
+                    Style="{StaticResource AppBarButtonRevealStyle}" />
+                <AppBarButton
+                    Command="{x:Bind Vm.SaveAllPatternsCommand}"
+                    Icon="Save"
+                    Label="Save All"
+                    Style="{StaticResource AppBarButtonRevealStyle}" />
+            </StackPanel>
+
+            <!--<listviewbutton:ListViewButton
                 Background="Transparent"
                 HoverBrush="#EFEFEF"
                 IconHeight="24"
@@ -119,7 +140,14 @@
                 IconWidth="20"
                 Symbol="Save"
                 Tapped="{x:Bind Vm.SavePatterns}"
-                Text="Save" />
+                Text="Save" />-->
+
+            <TextBlock
+                Padding="8,4,8,4"
+                FontSize="12"
+                Foreground="Red"
+                Text="{x:Bind Vm.SaveErrorMessage, Mode=OneWay}"
+                Visibility="{x:Bind Vm.SaveErrorMessage, Mode=OneWay, Converter={StaticResource IsNullOrEmptyInverseToVisibilityConverter}}" />
 
             <TextBlock
                 Margin="0,32,0,0"

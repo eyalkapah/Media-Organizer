@@ -1,17 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace MediaOrganizer.Core.Models
 {
     public class RegexPattern
     {
+        [JsonProperty("guid")]
         public Guid Guid { get; set; }
 
-        public string Pattern { get; private set; }
+        [JsonProperty("pattern")]
+        public string Pattern { get; set; }
+
+        [JsonProperty("replace_string")]
         public string ReplaceString { get; set; }
+
+        [JsonProperty("word")]
         public string Word { get; set; }
 
         public RegexPattern(string word, string pattern, string replaceString = null)
@@ -20,6 +24,10 @@ namespace MediaOrganizer.Core.Models
             Word = word;
             Pattern = pattern;
             ReplaceString = replaceString;
+        }
+
+        public RegexPattern()
+        {
         }
     }
 }

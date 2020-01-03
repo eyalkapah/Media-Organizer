@@ -1,9 +1,11 @@
+using System.Threading.Tasks;
 using MediaOrganizer.Core.Interfaces;
 using MediaOrganizer.Core.Models.Settings;
 using MediaOrganizer.UWP.Services;
 using MvvmCross;
 using MvvmCross.IoC;
 using MvvmCross.Platforms.Uap.Views;
+using MvvmCross.Platforms.Uap.Views.Suspension;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 
@@ -11,29 +13,22 @@ namespace MediaOrganizer.UWP
 {
     public abstract class MediaOrganizerApp : MvxApplication<Setup, Core.App>
     {
+        private SettingsService _settingsService;
+
+        protected async override Task EnteringBackground(IMvxSuspensionManager suspensionManager)
+        {
+            await _settingsService.SaveAsync();
+        }
+
         protected override void OnLaunched(LaunchActivatedEventArgs activationArgs)
         {
             base.OnLaunched(activationArgs);
 
             Mvx.IoCProvider.ConstructAndRegisterSingleton<IPickerService, PickerService>();
-            Mvx.IoCProvider.ConstructAndRegisterSingleton<ISettingsService, SettingsService>();
 
-            //ReadSettings();
-        }
+            _settingsService = new SettingsService();
 
-        private void ReadSettings()
-        {
-            var localSettings = ApplicationData.Current.LocalSettings;
-            var localFolder = ApplicationData.Current.LocalFolder;
-
-            // Setting in a container
-            var container = localSettings.CreateContainer("FoldersContainer", ApplicationDataCreateDisposition.Always);
-
-            if (localSettings.Containers.ContainsKey("FoldersContainer"))
-            {
-                localSettings.Containers["FoldersContainer"].Values["SourceFolder"] = "D:\\Downloads\\Telegram Desktop";
-                localSettings.Containers["FoldersContainer"].Values["DestinationFolder"] = "E:\\Plex\\Movies";
-            }
+            Mvx.IoCProvider.RegisterSingleton(typeof(ISettingsService), _settingsService);
         }
     }
 
