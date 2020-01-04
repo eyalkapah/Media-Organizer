@@ -235,6 +235,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MediaOrganizer.BackgroundTasks\MediaOrganizer.BackgroundTasks.csproj">
+      <Project>{a819909a-9749-4484-99eb-d0c952d434bf}</Project>
+      <Name>MediaOrganizer.BackgroundTasks</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MediaOrganizer.Core\MediaOrganizer.Core.csproj">
       <Project>{CEF80DF3-9E23-4E58-A401-894FD7B16D08}</Project>
       <Name>MediaOrganizer.Core</Name>
