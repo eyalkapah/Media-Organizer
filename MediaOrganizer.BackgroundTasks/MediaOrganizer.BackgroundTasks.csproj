@@ -122,6 +122,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BackgroundTaskHelper.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="MediaFilesScanTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
