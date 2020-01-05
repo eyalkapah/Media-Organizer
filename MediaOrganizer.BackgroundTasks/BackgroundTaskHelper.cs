@@ -9,7 +9,7 @@ namespace MediaOrganizer.BackgroundTasks
 {
     public static class BackgroundTaskHelper
     {
-        public static async Task<BackgroundTaskRegistration> RegisterBackgroundTaskAsync(string name, string entryPoint)
+        public static async Task<BackgroundTaskRegistration> RegisterBackgroundTaskAsync(string name, string entryPoint, int minuteIncrement)
         {
             try
             {
@@ -20,6 +20,23 @@ namespace MediaOrganizer.BackgroundTasks
                     Name = name,
                     TaskEntryPoint = entryPoint
                 };
+
+                var allTasks = BackgroundTaskRegistration.AllTasks;
+
+                var backgroundTasks = allTasks.Where(t => t.Value.Name.Equals(name));
+
+                if (!backgroundTasks.Any())
+                {
+                    var trigger = new TimeTrigger((uint)minuteIncrement, false);
+
+                    taskBuilder.SetTrigger(trigger);
+
+                    var task = taskBuilder.Register();
+
+                    return task;
+                }
+
+                return null;
             }
             catch (Exception ex)
             {
