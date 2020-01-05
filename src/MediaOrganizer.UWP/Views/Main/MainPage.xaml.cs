@@ -15,5 +15,13 @@ namespace MediaOrganizer.UWP
         {
             InitializeComponent();
         }
+
+        private void NavigationView_SelectionChanged(Windows.UI.Xaml.Controls.NavigationView sender, Windows.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+                Vm.NavigateToSettingsPage();
+            }
+        }
     }
 }

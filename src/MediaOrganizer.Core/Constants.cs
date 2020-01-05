@@ -1,6 +1,6 @@
-namespace MediaOrganizer.BackgroundTasks
+namespace MediaOrganizer.Core
 {
-    public class Constants
+    public static class Constants
     {
         public const string MediaFilesScanBackgroundTaskName = "MediaFilesScanBackgroundTask";
     }

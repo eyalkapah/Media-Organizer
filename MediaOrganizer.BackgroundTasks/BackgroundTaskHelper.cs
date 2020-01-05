@@ -9,11 +9,11 @@ namespace MediaOrganizer.BackgroundTasks
 {
     public static class BackgroundTaskHelper
     {
-        public static async Task<BackgroundTaskRegistration> RegisterBackgroundTaskAsync(string name, string entryPoint, int minuteIncrement)
+        public static BackgroundTaskRegistration RegisterBackgroundTask(string name, string entryPoint, int minuteIncrement)
         {
             try
             {
-                var allowed = await BackgroundExecutionManager.RequestAccessAsync();
+                var allowed = BackgroundExecutionManager.RequestAccessAsync();
 
                 var taskBuilder = new BackgroundTaskBuilder
                 {

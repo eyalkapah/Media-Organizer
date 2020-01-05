@@ -17,5 +17,10 @@ namespace MediaOrganizer.Core.ViewModels.Main
         {
             NavigationService.Navigate<FileOrganizerViewModel>();
         }
+
+        public void NavigateToSettingsPage()
+        {
+            NavigationService.Navigate<SettingsViewModel>();
+        }
     }
 }
