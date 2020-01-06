@@ -5,15 +5,52 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:MediaOrganizer.UWP.Views.Main"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:numerictextboxcontrol="using:MediaOrganizer.UWP.CustomControls.NumericTextBoxControl"
     xmlns:views="using:MvvmCross.Platforms.Uap.Views"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="36"
-            Text="Settings" />
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Padding="0,0,32,0">
+            <TextBlock
+                Margin="0"
+                Style="{ThemeResource SubheaderTextBlockStyle}"
+                Text="Activation" />
+
+            <Button
+                Margin="0,24,0,0"
+                VerticalAlignment="Center"
+                Command="{x:Bind Vm.ScanMediaCommand}"
+                Content="Scan for media" />
+
+            <TextBlock
+                Margin="0,32,0,0"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="Enable Service" />
+
+            <TextBlock
+                Margin="0,8,0,0"
+                FontWeight="Normal"
+                Style="{ThemeResource BaseTextBlockStyle}"
+                Text="Turn on media scanner to run as a service." />
+
+            <ToggleSwitch
+                x:Name="ServiceEnabledToggleSwitch"
+                Margin="0,8"
+                IsOn="{x:Bind Vm.IsServiceEnabled, Mode=TwoWay}" />
+
+            <TextBlock
+                Margin="0,8,0,0"
+                FontWeight="Normal"
+                Style="{ThemeResource BaseTextBlockStyle}"
+                Text="Scan for media every" />
+
+            <ComboBox
+                Margin="0,8"
+                DisplayMemberPath="Description"
+                IsEnabled="{x:Bind ServiceEnabledToggleSwitch.IsOn, Mode=OneWay}"
+                ItemsSource="{x:Bind Vm.MediaScanIntervals}"
+                SelectedItem="{x:Bind Vm.SelectedMediaScanInterval, Mode=TwoWay}" />
+        </StackPanel>
+    </ScrollViewer>
 </views:MvxWindowsPage>

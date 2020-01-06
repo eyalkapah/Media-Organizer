@@ -11,5 +11,9 @@
       }
     ],
     "source_folder": "D:\\Downloads\\Telegram Desktop"
+  },
+  "activation_settings": {
+    "is_service_enabled": false,
+    "service_interval_in_minutes": 30
   }
 }

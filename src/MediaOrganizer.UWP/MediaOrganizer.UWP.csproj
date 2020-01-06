@@ -100,6 +100,7 @@
     <Compile Include="Converters\IsNullOrEmptyInverseConverter.cs" />
     <Compile Include="Converters\IsNullOrEmptyInverseToVisibilityConverter.cs" />
     <Compile Include="CustomControls\ListViewButton\ListViewButton.cs" />
+    <Compile Include="CustomControls\NumericTextBoxControl\NumericTextBox.cs" />
     <Compile Include="CustomControls\ValidatedTextBoxControl\ValidatedTextBox.cs" />
     <Compile Include="Services\PickerService.cs" />
     <Compile Include="Setup.cs" />

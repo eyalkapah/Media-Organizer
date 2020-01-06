@@ -6,5 +6,8 @@ namespace MediaOrganizer.Core.Models.Settings
     {
         [JsonProperty("folder_settings")]
         public FolderSettings FolderSettings { get; set; }
+
+        [JsonProperty("activation_settings")]
+        public ActivationSettings ActivationSettings { get; set; }
     }
 }

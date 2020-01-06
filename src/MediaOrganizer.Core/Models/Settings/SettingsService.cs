@@ -24,18 +24,21 @@ namespace MediaOrganizer.UWP.Services
 
         public void ReadSettings()
         {
+            var text = string.Empty;
+
             if (File.Exists(FullPath))
             {
-                var text = File.ReadAllText(FullPath);
+                text = File.ReadAllText(FullPath);
 
                 Instance = JsonConvert.DeserializeObject<SettingsModel>(text);
-            }
-            else
-            {
-                var text = File.ReadAllText("default-settings.json");
 
-                Instance = JsonConvert.DeserializeObject<SettingsModel>(text);
+                if (Instance != null)
+                    return;
             }
+
+            text = File.ReadAllText("default-settings.json");
+
+            Instance = JsonConvert.DeserializeObject<SettingsModel>(text);
         }
 
         public void Save()

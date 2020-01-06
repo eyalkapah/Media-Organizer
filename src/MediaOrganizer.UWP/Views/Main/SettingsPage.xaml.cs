@@ -10,7 +10,7 @@ namespace MediaOrganizer.UWP.Views.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    [MvxRegionPresentation("ContentFramerur")]
+    [MvxRegionPresentation("ContentFrame")]
     [MvxViewFor(typeof(SettingsViewModel))]
     public sealed partial class SettingsPage : MvxWindowsPage
     {
