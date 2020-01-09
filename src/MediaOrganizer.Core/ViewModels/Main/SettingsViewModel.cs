@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MediaOrganizer.Core.Interfaces;
 using MediaOrganizer.Core.Models;
 using MediaOrganizer.Core.Models.Settings;
+using MediaOrganizer.Core.ViewModels.Main.Dialogs;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
@@ -15,20 +17,31 @@ namespace MediaOrganizer.Core.ViewModels.Main
 {
     public class SettingsViewModel : MvxNavigationViewModel
     {
-        public ICommand ScanMediaCommand { get; set; }
-
-        private bool _isServiceEnabled;
+        private readonly IBackgroundTasksService _backgroundTasksService;
         private readonly ISettingsService _settingsService;
+        private bool? _isServiceEnabled;
+        private MediaInterval _selectedMediaScanInterval;
 
         public bool IsServiceEnabled
         {
-            get => _isServiceEnabled;
-            set => SetProperty(ref _isServiceEnabled, value);
+            get => _isServiceEnabled == true;
+            set
+            {
+                if (_isServiceEnabled != value)
+                {
+                    if (_isServiceEnabled != null)
+                        ServiceEnabledChangedAsync(value);
+
+                    _isServiceEnabled = value;
+
+                    RaisePropertyChanged();
+                }
+            }
         }
 
         public List<MediaInterval> MediaScanIntervals { get; set; }
 
-        private MediaInterval _selectedMediaScanInterval;
+        public ICommand ScanMediaCommand { get; set; }
 
         public MediaInterval SelectedMediaScanInterval
         {
@@ -36,10 +49,12 @@ namespace MediaOrganizer.Core.ViewModels.Main
             set => SetProperty(ref _selectedMediaScanInterval, value);
         }
 
-        public SettingsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, ISettingsService settingsService) : base(logProvider, navigationService)
+        public SettingsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, ISettingsService settingsService, IBackgroundTasksService backgroundTasksService) : base(logProvider, navigationService)
         {
             ScanMediaCommand = new MvxCommand(ScanMedia);
+
             _settingsService = settingsService;
+            _backgroundTasksService = backgroundTasksService;
 
             MediaScanIntervals = new List<MediaInterval>
             {
@@ -50,17 +65,37 @@ namespace MediaOrganizer.Core.ViewModels.Main
             };
         }
 
-        protected override void InitFromBundle(IMvxBundle parameters)
+        public override Task Initialize()
         {
-            base.InitFromBundle(parameters);
-
             var interval = _settingsService.Instance.ActivationSettings?.ServiceScanIntervalInMinutes ?? 30;
 
             SelectedMediaScanInterval = MediaScanIntervals.FirstOrDefault(i => i.Interval.Equals(interval));
+
+            IsServiceEnabled = _backgroundTasksService.IsBackgroundTaskRegistered(Constants.MediaFilesScanBackgroundTaskName);
+
+            return base.Initialize();
         }
 
         private void ScanMedia()
         {
+        }
+
+        private async void ServiceEnabledChangedAsync(bool isServiceEnabled)
+        {
+            var result = isServiceEnabled
+                ? _backgroundTasksService.RegisterMediaFilesScanTask(SelectedMediaScanInterval.Interval)
+                : _backgroundTasksService.UnregisterBackgroundTask(Constants.MediaFilesScanBackgroundTaskName);
+
+            if (result == false)
+            {
+                await NavigationService.Navigate<SimpleTextDialogViewModel, SimpleTextDialogParametersModel>(new SimpleTextDialogParametersModel
+                {
+                    Title = "Error",
+                    Text = isServiceEnabled
+                    ? "Sorry, we failed to register the service."
+                    : "Sorry, we failed to un-register the service"
+                }).ConfigureAwait(false);
+            }
         }
     }
 }

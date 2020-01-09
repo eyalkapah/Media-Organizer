@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using MediaOrganizer.BackgroundTasks;
 using MediaOrganizer.Core.Interfaces;
 using MediaOrganizer.Core.Models.Settings;
 using MediaOrganizer.UWP.Services;
@@ -27,6 +28,7 @@ namespace MediaOrganizer.UWP
             base.OnLaunched(activationArgs);
 
             Mvx.IoCProvider.ConstructAndRegisterSingleton<IPickerService, PickerService>();
+            Mvx.IoCProvider.ConstructAndRegisterSingleton<IBackgroundTasksService, BackgroundTasksService>();
 
             _settingsService = new SettingsService(ApplicationData.Current.LocalFolder.Path);
 

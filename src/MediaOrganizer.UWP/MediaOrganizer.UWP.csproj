@@ -102,9 +102,13 @@
     <Compile Include="CustomControls\ListViewButton\ListViewButton.cs" />
     <Compile Include="CustomControls\NumericTextBoxControl\NumericTextBox.cs" />
     <Compile Include="CustomControls\ValidatedTextBoxControl\ValidatedTextBox.cs" />
+    <Compile Include="Services\BackgroundTasksService.cs" />
     <Compile Include="Services\PickerService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Dialogs\SimpleTextDialog.xaml.cs">
+      <DependentUpon>SimpleTextDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Main\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -208,6 +212,10 @@
     <Page Include="Views\Dialogs\AddPatternDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dialogs\SimpleTextDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Main\FileOrganizerPage.xaml">
       <SubType>Designer</SubType>

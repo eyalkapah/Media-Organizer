@@ -9,6 +9,11 @@ namespace MediaOrganizer.BackgroundTasks
 {
     public static class BackgroundTaskHelper
     {
+        public static bool IsBackgroundTaskRegistered(string taskName)
+        {
+            return BackgroundTaskRegistration.AllTasks.Any(b => b.Value.Name.Equals(taskName));
+        }
+
         public static BackgroundTaskRegistration RegisterBackgroundTask(string name, string entryPoint, int minuteIncrement)
         {
             try

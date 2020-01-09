@@ -1,6 +1,8 @@
 using MediaOrganizer.Core.Models.Settings;
 using System.IO;
 using Newtonsoft.Json;
+using System;
+using System.Diagnostics;
 
 namespace MediaOrganizer.UWP.Services
 {
@@ -43,19 +45,26 @@ namespace MediaOrganizer.UWP.Services
 
         public void Save()
         {
-            var json = JsonConvert.SerializeObject(Instance);
-
-            FileStream stream = null;
-
-            if (!File.Exists(FullPath))
+            try
             {
-                using (stream = File.Create(FullPath))
+                var json = JsonConvert.SerializeObject(Instance);
+
+                FileStream stream = null;
+
+                if (!File.Exists(FullPath))
                 {
-                    File.WriteAllText(FullPath, json);
+                    using (stream = File.Create(FullPath))
+                    {
+                        File.WriteAllText(FullPath, json);
+                    }
                 }
+                else
+                    File.WriteAllText(FullPath, json);
             }
-            else
-                File.WriteAllText(FullPath, json);
+            catch (Exception ex)
+            {
+                Debug.Assert(false, $"Failed to save file: {ex.Message}");
+            }
         }
     }
 }
