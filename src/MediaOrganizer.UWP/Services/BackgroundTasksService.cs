@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using MediaOrganizer.BackgroundTasks;
 using MediaOrganizer.Core;
 using MediaOrganizer.Core.Interfaces;
+using MediaOrganizer.Core.Models.Settings;
 using Windows.ApplicationModel.Background;
 
 namespace MediaOrganizer.UWP.Services
@@ -54,6 +56,20 @@ namespace MediaOrganizer.UWP.Services
 
                 return false;
             }
+        }
+
+        public async void RunMediaScanTask()
+        {
+            try
+            {
+                var task = new MediaFilesScanTask();
+                await task.RunTaskAsync(null);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            //MediaFilesScanTask.RunTaskAsync(_settingsService.Instance.FolderSettings);
         }
 
         public bool UnregisterBackgroundTask(string name)

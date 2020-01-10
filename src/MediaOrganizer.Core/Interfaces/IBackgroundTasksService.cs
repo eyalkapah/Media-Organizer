@@ -10,6 +10,8 @@ namespace MediaOrganizer.Core.Interfaces
 
         bool RegisterMediaFilesScanTask(int minuteIncrement);
 
+        void RunMediaScanTask();
+
         bool UnregisterBackgroundTask(string name);
     }
 }

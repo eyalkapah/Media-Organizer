@@ -8,6 +8,7 @@ using MediaOrganizer.BackgroundTasks.Models;
 using MediaOrganizer.Core.Models.Settings;
 using MediaOrganizer.UWP.Services;
 using Windows.ApplicationModel.Background;
+using Windows.Foundation;
 using Windows.Storage;
 
 namespace MediaOrganizer.BackgroundTasks
@@ -23,6 +24,21 @@ namespace MediaOrganizer.BackgroundTasks
             var defferal = taskInstance.GetDeferral();
 
             try
+            {
+                await RunTaskAsync(defferal);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.Message);
+            }
+            finally
+            {
+            }
+        }
+
+        public IAsyncAction RunTaskAsync(BackgroundTaskDeferral defferal)
+        {
+            return Task.Run(async () =>
             {
                 var folderSettings = new SettingsService(ApplicationData.Current.LocalFolder.Path).Instance.FolderSettings;
 
@@ -40,23 +56,15 @@ namespace MediaOrganizer.BackgroundTasks
                 var destinationFolder = await StorageFolder.GetFolderFromPathAsync(folderSettings.DestinationFolder);
 
                 updatedFiles.ToList().ForEach(async f => await f.File.MoveAsync(destinationFolder, f.Filename));
-            }
-            catch (Exception ex)
-            {
-                Debug.Fail(ex.Message);
-            }
-            finally
-            {
-                defferal.Complete();
-            }
+
+                defferal?.Complete();
+            }).AsAsyncAction();
         }
 
-        private void OnCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
+        private static List<UpdatedFile> Rename(FolderSettings folderSettings, IEnumerable<StorageFile> mediaFiles)
         {
-        }
+            var list = new List<UpdatedFile>();
 
-        private static IEnumerable<UpdatedFile> Rename(FolderSettings folderSettings, IEnumerable<StorageFile> mediaFiles)
-        {
             foreach (var file in mediaFiles)
             {
                 var filename = file.Name;
@@ -69,10 +77,14 @@ namespace MediaOrganizer.BackgroundTasks
                     filename = Regex.Replace(filename, pattern.Pattern, pattern.ReplaceString);
                 }
 
-                yield return new UpdatedFile(file, filename);
+                list.Add(new UpdatedFile(file, filename));
             }
 
-            yield return null;
+            return list;
+        }
+
+        private void OnCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
+        {
         }
     }
 }

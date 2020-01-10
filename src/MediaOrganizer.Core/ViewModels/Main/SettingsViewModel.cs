@@ -84,6 +84,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
         private void ScanMedia()
         {
+            _backgroundTasksService.RunMediaScanTask();
         }
 
         private async void ServiceEnabledChangedAsync(bool isServiceEnabled)
