@@ -63,6 +63,8 @@ namespace MediaOrganizer.Core.ViewModels.Main
                 new MediaInterval { Interval = 360, Description = "6 hours"},
                 new MediaInterval { Interval = 1440, Description = "1 day"}
             };
+
+            backgroundTasksService.MediaFilesScanTaskCompleted += MediaFilesScanTaskCompleted;
         }
 
         public override Task Initialize()
@@ -74,6 +76,10 @@ namespace MediaOrganizer.Core.ViewModels.Main
             IsServiceEnabled = _backgroundTasksService.IsBackgroundTaskRegistered(Constants.MediaFilesScanBackgroundTaskName);
 
             return base.Initialize();
+        }
+
+        private void MediaFilesScanTaskCompleted(object sender, EventArgs e)
+        {
         }
 
         private void ScanMedia()

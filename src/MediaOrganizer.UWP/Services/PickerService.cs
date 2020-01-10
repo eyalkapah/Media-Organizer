@@ -14,9 +14,10 @@ namespace MediaOrganizer.UWP.Services
             folderPicker.SuggestedStartLocation = PickerLocationId.Desktop;
             folderPicker.FileTypeFilter.Add("*");
 
-            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+            var folder = await folderPicker.PickSingleFolderAsync();
             if (folder != null)
             {
+                Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.Add(folder);
                 return folder.Path;
             }
             else

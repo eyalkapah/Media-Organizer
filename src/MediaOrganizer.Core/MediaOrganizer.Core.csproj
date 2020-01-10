@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <None Remove="default-settings.json" />
+    <None Remove="Helpers\MediaFilesScanTaskHelper.cs_" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Helpers\MediaFilesScanTaskHelper.cs_" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,9 +29,5 @@
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.0.1" />
     <PackageReference Include="MvvmCross" Version="6.4.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>

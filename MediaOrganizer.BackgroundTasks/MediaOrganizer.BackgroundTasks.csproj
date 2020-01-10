@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="BackgroundTaskHelper.cs" />
     <Compile Include="MediaFilesScanTask.cs" />
+    <Compile Include="Models\UpdatedFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MediaOrganizer.Core.Models.Settings;
+using MvvmCross;
+
+namespace MediaOrganizer.Core.Helpers
+{
+    public static class MediaFilesScanTaskHelper
+    {
+        public static string[] GetMediaFiles(string path)
+        {
+            var files = Directory.GetFiles(path, "*.mkv", SearchOption.AllDirectories);
+
+            return files;
+        }
+    }
+}

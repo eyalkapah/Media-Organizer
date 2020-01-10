@@ -9,6 +9,9 @@ namespace MediaOrganizer.UWP.Services
 {
     public class BackgroundTasksService : IBackgroundTasksService
     {
+        public event EventHandler MediaFilesScanTaskCompleted = delegate
+        { };
+
         public bool IsBackgroundTaskRegistered(string taskName)
         {
             return BackgroundTaskRegistration.AllTasks.Any(b => b.Value.Name.Equals(taskName));
@@ -37,6 +40,8 @@ namespace MediaOrganizer.UWP.Services
                     taskBuilder.SetTrigger(trigger);
 
                     var task = taskBuilder.Register();
+
+                    task.Completed += (s, e) => MediaFilesScanTaskCompleted.Invoke(s, null);
 
                     return true;
                 }

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using MediaOrganizer.BackgroundTasks;
+using MediaOrganizer.Core.Helpers;
 using MediaOrganizer.Core.Interfaces;
 using MediaOrganizer.Core.Models.Settings;
 using MediaOrganizer.UWP.Services;
