@@ -6,19 +6,23 @@
     xmlns:local="using:MediaOrganizer.UWP.Views.Main"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:numerictextboxcontrol="using:MediaOrganizer.UWP.CustomControls.NumericTextBoxControl"
+    xmlns:scanmediacontrol="using:MediaOrganizer.UWP.CustomControls.ScanMediaControl"
     xmlns:views="using:MvvmCross.Platforms.Uap.Views"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Padding="0,0,32,0">
+
             <TextBlock
                 Margin="0"
                 Style="{ThemeResource SubheaderTextBlockStyle}"
                 Text="Activation" />
 
+            <scanmediacontrol:ScanMedia Margin="0,24,0,8" />
+
             <Button
-                Margin="0,24,0,0"
+                Margin="0,8,0,0"
                 VerticalAlignment="Center"
                 Command="{x:Bind Vm.ScanMediaCommand}"
                 Content="Scan for media" />

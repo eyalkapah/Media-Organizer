@@ -101,6 +101,7 @@
     <Compile Include="Converters\IsNullOrEmptyInverseToVisibilityConverter.cs" />
     <Compile Include="CustomControls\ListViewButton\ListViewButton.cs" />
     <Compile Include="CustomControls\NumericTextBoxControl\NumericTextBox.cs" />
+    <Compile Include="CustomControls\ScanMediaControl\ScanMedia.cs" />
     <Compile Include="CustomControls\ValidatedTextBoxControl\ValidatedTextBox.cs" />
     <Compile Include="Services\BackgroundTasksService.cs" />
     <Compile Include="Services\PickerService.cs" />
@@ -128,6 +129,8 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\Images\checking_media.png" />
+    <Content Include="Assets\Images\up_to_date.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -197,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\Controls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\ScanMediaControl\ScanMedia.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

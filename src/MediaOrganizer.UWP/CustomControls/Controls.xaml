@@ -4,5 +4,6 @@
     xmlns:local="using:MediaOrganizer.UWP.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ValidatedTextBoxControl/ValidatedTextBox.xaml" />
+        <ResourceDictionary Source="ScanMediaControl/ScanMedia.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
