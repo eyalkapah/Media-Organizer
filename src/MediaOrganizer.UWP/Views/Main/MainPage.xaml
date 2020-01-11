@@ -19,23 +19,25 @@
         </NavigationView.Header>
         <NavigationView.MenuItems>
             <NavigationViewItem
+                Content="Home"
+                Icon="Home"
+                IsSelected="True"
+                Tag="HomePage"
+                Tapped="{x:Bind Vm.NavigateToHomePage}" />
+            <NavigationViewItem
                 Content="File Organizer"
-                Icon="Play"
-                Tag="SamplePage1"
-                Tapped="{x:Bind Vm.NavigateToFileOrgnizerPage}" />
+                Tag="FileOrganizer"
+                Tapped="{x:Bind Vm.NavigateToFileOrgnizerPage}">
+                <NavigationViewItem.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA69;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
             <NavigationViewItem Content="Notifications" Tag="SamplePage2">
                 <NavigationViewItem.Icon>
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7E7;" />
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            <NavigationViewItem
-                Content="Menu Item3"
-                Icon="Refresh"
-                Tag="SamplePage3" />
-            <NavigationViewItem
-                Content="Menu Item4"
-                Icon="Download"
-                Tag="SamplePage4" />
         </NavigationView.MenuItems>
         <Frame x:Name="ContentFrame" Padding="16" />
     </NavigationView>

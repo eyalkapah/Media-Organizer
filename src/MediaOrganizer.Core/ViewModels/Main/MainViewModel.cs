@@ -20,6 +20,11 @@ namespace MediaOrganizer.Core.ViewModels.Main
             NavigationService.Navigate<FileOrganizerViewModel>();
         }
 
+        public void NavigateToHomePage()
+        {
+            NavigationService.Navigate<HomeViewModel>();
+        }
+
         public void NavigateToSettingsPage()
         {
             var settings = Mvx.IoCProvider.Resolve<ISettingsService>();
