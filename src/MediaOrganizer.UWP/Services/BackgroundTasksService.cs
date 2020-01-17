@@ -15,6 +15,18 @@ namespace MediaOrganizer.UWP.Services
         public event EventHandler MediaFilesScanTaskCompleted = delegate
         { };
 
+        public DateTime? GetLastScan()
+        {
+            var localSettings = ApplicationData.Current.LocalSettings;
+
+            var lastScan = localSettings.Values[Constants.LastScannedSettings];
+
+            if (lastScan == null)
+                return null;
+
+            return (DateTime)lastScan;
+        }
+
         public bool IsBackgroundTaskRegistered(string taskName)
         {
             return BackgroundTaskRegistration.AllTasks.Any(b => b.Value.Name.Equals(taskName));
@@ -77,19 +89,7 @@ namespace MediaOrganizer.UWP.Services
         {
             var localSettings = ApplicationData.Current.LocalSettings;
 
-            localSettings.Values[Constants.LastScannedSettings] = DateTime.Now;
-        }
-
-        public DateTime? GetLastScan()
-        {
-            var localSettings = ApplicationData.Current.LocalSettings;
-
-            var lastScan = localSettings.Values[Constants.LastScannedSettings];
-
-            if (lastScan == null)
-                return null;
-
-            return (DateTime)lastScan;
+            localSettings.Values.Add(Constants.LastScannedSettings, DateTime.Now.ToString());
         }
 
         public bool UnregisterBackgroundTask(string name)

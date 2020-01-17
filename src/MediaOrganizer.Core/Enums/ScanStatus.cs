@@ -9,7 +9,9 @@ namespace MediaOrganizer.Core.Enums
     public enum ScanStatus
     {
         Idle,
+        UpToDate,
         Scanning,
+        Moving,
         Failure
     }
 }

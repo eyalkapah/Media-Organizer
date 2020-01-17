@@ -44,6 +44,14 @@ namespace MediaOrganizer.UWP.CustomControls.ScanMediaControl
             {  ScanStatus.Scanning,  new Uri("ms-appx:///Assets/Images/checking_media.png") },
         };
 
+        private Dictionary<ScanStatus, string> _scanTitles = new Dictionary<ScanStatus, string>
+        {
+            { ScanStatus.Idle, "Idle" },
+            { ScanStatus.UpToDate, "You're up to date" },
+            { ScanStatus.Scanning, "Checking for media..." },
+            { ScanStatus.Moving, "Media available" }
+        };
+
         public Uri ImageSourceUri
         {
             get => (Uri)GetValue(ImageSourceUriProperty);
@@ -112,6 +120,8 @@ namespace MediaOrganizer.UWP.CustomControls.ScanMediaControl
         private void SetImage(ScanStatus status)
         {
             ImageSourceUri = _scanStatusMap[status];
+
+            Title = _scanTitles[status];
         }
     }
 }
