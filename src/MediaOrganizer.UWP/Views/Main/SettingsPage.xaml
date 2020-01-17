@@ -19,7 +19,10 @@
                 Style="{ThemeResource SubheaderTextBlockStyle}"
                 Text="Activation" />
 
-            <scanmediacontrol:ScanMedia Margin="0,24,0,8" />
+            <scanmediacontrol:ScanMedia
+                Margin="0,24,0,8"
+                ScanMediaCommand="{x:Bind Vm.ScanMediaCommand}"
+                ScanStatus="{x:Bind Vm.ScanStatus, Mode=OneWay}" />
 
             <TextBlock
                 Margin="0,32,0,0"

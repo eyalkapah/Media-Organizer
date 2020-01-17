@@ -6,6 +6,7 @@ using MediaOrganizer.Core;
 using MediaOrganizer.Core.Interfaces;
 using MediaOrganizer.Core.Models.Settings;
 using Windows.ApplicationModel.Background;
+using Windows.Storage;
 
 namespace MediaOrganizer.UWP.Services
 {
@@ -70,6 +71,25 @@ namespace MediaOrganizer.UWP.Services
             }
 
             //MediaFilesScanTask.RunTaskAsync(_settingsService.Instance.FolderSettings);
+        }
+
+        public void SetLastScan()
+        {
+            var localSettings = ApplicationData.Current.LocalSettings;
+
+            localSettings.Values[Constants.LastScannedSettings] = DateTime.Now;
+        }
+
+        public DateTime? GetLastScan()
+        {
+            var localSettings = ApplicationData.Current.LocalSettings;
+
+            var lastScan = localSettings.Values[Constants.LastScannedSettings];
+
+            if (lastScan == null)
+                return null;
+
+            return (DateTime)lastScan;
         }
 
         public bool UnregisterBackgroundTask(string name)

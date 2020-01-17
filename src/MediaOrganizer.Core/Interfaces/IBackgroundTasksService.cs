@@ -13,5 +13,8 @@ namespace MediaOrganizer.Core.Interfaces
         void RunMediaScanTask();
 
         bool UnregisterBackgroundTask(string name);
+        void SetLastScan();
+
+        DateTime? GetLastScan();
     }
 }

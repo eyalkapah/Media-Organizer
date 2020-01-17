@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MediaOrganizer.Core.Enums;
 using MediaOrganizer.Core.Interfaces;
 using MediaOrganizer.Core.Models;
 using MediaOrganizer.Core.Models.Settings;
@@ -39,6 +40,15 @@ namespace MediaOrganizer.Core.ViewModels.Main
             }
         }
 
+        private ScanStatus _scanStatus;
+
+        public ScanStatus ScanStatus
+        {
+            get => _scanStatus;
+            set => SetProperty(ref _scanStatus, value);
+        }
+
+
         public List<MediaInterval> MediaScanIntervals { get; set; }
 
         public ICommand ScanMediaCommand { get; set; }
@@ -51,7 +61,7 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
         public SettingsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, ISettingsService settingsService, IBackgroundTasksService backgroundTasksService) : base(logProvider, navigationService)
         {
-            ScanMediaCommand = new MvxCommand(ScanMedia);
+            ScanMediaCommand = new MvxCommand(ScanMediaAsync);
 
             _settingsService = settingsService;
             _backgroundTasksService = backgroundTasksService;
@@ -75,16 +85,31 @@ namespace MediaOrganizer.Core.ViewModels.Main
 
             IsServiceEnabled = _backgroundTasksService.IsBackgroundTaskRegistered(Constants.MediaFilesScanBackgroundTaskName);
 
+            var lastScanned = _backgroundTasksService.GetLastScan();
             return base.Initialize();
         }
 
         private void MediaFilesScanTaskCompleted(object sender, EventArgs e)
         {
+            FinishScan(ScanStatus.Idle);
         }
 
-        private void ScanMedia()
+        private async void ScanMediaAsync()
         {
+            ScanStatus = ScanStatus.Scanning;
+
+            await Task.Run(() => Task.Delay(3000)).ConfigureAwait(false);
+
             _backgroundTasksService.RunMediaScanTask();
+
+            FinishScan(ScanStatus.Idle);
+        }
+
+        private void FinishScan(ScanStatus status)
+        {
+            ScanStatus = status;
+
+            _backgroundTasksService.SetLastScan();
         }
 
         private async void ServiceEnabledChangedAsync(bool isServiceEnabled)
