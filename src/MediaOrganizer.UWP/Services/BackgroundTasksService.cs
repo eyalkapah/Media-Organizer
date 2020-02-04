@@ -24,7 +24,7 @@ namespace MediaOrganizer.UWP.Services
             if (lastScan == null)
                 return null;
 
-            return (DateTime)lastScan;
+            return DateTime.Parse(lastScan.ToString());
         }
 
         public bool IsBackgroundTaskRegistered(string taskName)
@@ -89,7 +89,7 @@ namespace MediaOrganizer.UWP.Services
         {
             var localSettings = ApplicationData.Current.LocalSettings;
 
-            localSettings.Values.Add(Constants.LastScannedSettings, DateTime.Now.ToString());
+            localSettings.AddOrUpdate(Constants.LastScannedSettings, DateTime.Now.ToString());
         }
 
         public bool UnregisterBackgroundTask(string name)

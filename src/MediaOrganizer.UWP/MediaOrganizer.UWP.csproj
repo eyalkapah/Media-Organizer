@@ -103,6 +103,7 @@
     <Compile Include="CustomControls\NumericTextBoxControl\NumericTextBox.cs" />
     <Compile Include="CustomControls\ScanMediaControl\ScanMedia.cs" />
     <Compile Include="CustomControls\ValidatedTextBoxControl\ValidatedTextBox.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Services\BackgroundTasksService.cs" />
     <Compile Include="Services\PickerService.cs" />
     <Compile Include="Setup.cs" />
