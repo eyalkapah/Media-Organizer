@@ -28,12 +28,13 @@ namespace MediaOrganizer.UWP
         {
             base.OnLaunched(activationArgs);
 
+            _settingsService = new SettingsService(ApplicationData.Current.LocalFolder.Path);
+            Mvx.IoCProvider.RegisterSingleton(typeof(ISettingsService), _settingsService);
+
             Mvx.IoCProvider.ConstructAndRegisterSingleton<IPickerService, PickerService>();
             Mvx.IoCProvider.ConstructAndRegisterSingleton<IBackgroundTasksService, BackgroundTasksService>();
 
-            _settingsService = new SettingsService(ApplicationData.Current.LocalFolder.Path);
 
-            Mvx.IoCProvider.RegisterSingleton(typeof(ISettingsService), _settingsService);
         }
     }
 

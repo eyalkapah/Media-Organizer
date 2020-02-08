@@ -5,5 +5,7 @@ namespace MediaOrganizer.Core
         public const string LastScannedSettings = "LastScanned";
         public const string MediaFilesScanBackgroundEntryPoint = "MediaOrganizer.BackgroundTasks.MediaFilesScanTask";
         public const string MediaFilesScanBackgroundTaskName = "MediaFilesScanBackgroundTask";
+
+        public const string MediaFileTypesPattern = "(.((mkv)|(mp4)))";
     }
 }

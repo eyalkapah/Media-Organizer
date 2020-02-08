@@ -1,9 +1,12 @@
+using MediaOrganizer.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
+using Windows.Storage;
 
 namespace MediaOrganizer.BackgroundTasks
 {
@@ -13,6 +16,8 @@ namespace MediaOrganizer.BackgroundTasks
         {
             return BackgroundTaskRegistration.AllTasks.Any(b => b.Value.Name.Equals(taskName));
         }
+
+      
 
         public static BackgroundTaskRegistration RegisterBackgroundTask(string name, string entryPoint, int minuteIncrement)
         {
@@ -48,5 +53,7 @@ namespace MediaOrganizer.BackgroundTasks
                 throw;
             }
         }
+
+       
     }
 }

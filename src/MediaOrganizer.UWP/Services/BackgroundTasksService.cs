@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using MediaOrganizer.BackgroundTasks;
 using MediaOrganizer.Core;
 using MediaOrganizer.Core.Interfaces;
@@ -12,8 +14,15 @@ namespace MediaOrganizer.UWP.Services
 {
     public class BackgroundTasksService : IBackgroundTasksService
     {
+        private readonly ISettingsService _settingsService;
+
         public event EventHandler MediaFilesScanTaskCompleted = delegate
         { };
+
+        public BackgroundTasksService(ISettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
 
         public DateTime? GetLastScan()
         {
@@ -30,6 +39,17 @@ namespace MediaOrganizer.UWP.Services
         public bool IsBackgroundTaskRegistered(string taskName)
         {
             return BackgroundTaskRegistration.AllTasks.Any(b => b.Value.Name.Equals(taskName));
+        }
+
+        public async Task<bool> IsMediaAvailableAsync()
+        {
+            var sFolder = await StorageFolder.GetFolderFromPathAsync(_settingsService.Instance.FolderSettings.SourceFolder);
+
+            var files = await sFolder.GetFilesAsync();
+
+            var mediaFiles = files.Where(f => Regex.IsMatch(f.FileType, Constants.MediaFileTypesPattern));
+
+            return mediaFiles.Any();
         }
 
         public bool RegisterMediaFilesScanTask(int minuteIncrement)

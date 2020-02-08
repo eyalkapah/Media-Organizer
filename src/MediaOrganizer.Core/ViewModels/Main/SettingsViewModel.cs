@@ -74,10 +74,11 @@ namespace MediaOrganizer.Core.ViewModels.Main
                 new MediaInterval { Interval = 1440, Description = "1 day"}
             };
 
-            backgroundTasksService.MediaFilesScanTaskCompleted += MediaFilesScanTaskCompleted;
+            if (backgroundTasksService != null)
+                backgroundTasksService.MediaFilesScanTaskCompleted += MediaFilesScanTaskCompleted;
         }
 
-        public override Task Initialize()
+        public async override Task Initialize()
         {
             var interval = _settingsService.Instance.ActivationSettings?.ServiceScanIntervalInMinutes ?? 30;
 
@@ -86,7 +87,11 @@ namespace MediaOrganizer.Core.ViewModels.Main
             IsServiceEnabled = _backgroundTasksService.IsBackgroundTaskRegistered(Constants.MediaFilesScanBackgroundTaskName);
 
             var lastScanned = _backgroundTasksService.GetLastScan();
-            return base.Initialize();
+
+            if (await _backgroundTasksService.IsMediaAvailableAsync().ConfigureAwait(false))
+            {
+                ScanStatus = ScanStatus.MediaFileExist;
+            }
         }
 
         private void MediaFilesScanTaskCompleted(object sender, EventArgs e)

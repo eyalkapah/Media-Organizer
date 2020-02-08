@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace MediaOrganizer.Core.Interfaces
 {
@@ -16,5 +17,7 @@ namespace MediaOrganizer.Core.Interfaces
         void SetLastScan();
 
         DateTime? GetLastScan();
+
+        Task<bool> IsMediaAvailableAsync();
     }
 }

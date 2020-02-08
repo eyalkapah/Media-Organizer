@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MediaOrganizer.BackgroundTasks.Models;
+using MediaOrganizer.Core;
 using MediaOrganizer.Core.Models.Settings;
 using MediaOrganizer.UWP.Services;
 using Windows.ApplicationModel.Background;
@@ -15,8 +16,6 @@ namespace MediaOrganizer.BackgroundTasks
 {
     public sealed class MediaFilesScanTask : IBackgroundTask
     {
-        private const string MediaFileTypesPattern = "(.((mkv)|(mp4)))";
-
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
             taskInstance.Canceled += OnCanceled;
@@ -42,11 +41,11 @@ namespace MediaOrganizer.BackgroundTasks
             {
                 var folderSettings = new SettingsService(ApplicationData.Current.LocalFolder.Path).Instance.FolderSettings;
 
-                var sourceFolder = await StorageFolder.GetFolderFromPathAsync(folderSettings.SourceFolder);
+                var sFolder = await StorageFolder.GetFolderFromPathAsync(folderSettings.SourceFolder);
 
-                var files = await sourceFolder.GetFilesAsync();
+                var files = await sFolder.GetFilesAsync();
 
-                var mediaFiles = files.Where(f => Regex.IsMatch(f.FileType, MediaFileTypesPattern));
+                var mediaFiles = files.Where(f => Regex.IsMatch(f.FileType, Constants.MediaFileTypesPattern));
 
                 var updatedFiles = Rename(folderSettings, mediaFiles);
 
@@ -60,6 +59,9 @@ namespace MediaOrganizer.BackgroundTasks
                 defferal?.Complete();
             }).AsAsyncAction();
         }
+
+
+
 
         private static List<UpdatedFile> Rename(FolderSettings folderSettings, IEnumerable<StorageFile> mediaFiles)
         {
