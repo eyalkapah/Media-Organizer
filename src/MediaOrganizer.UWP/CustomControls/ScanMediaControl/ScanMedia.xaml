@@ -26,6 +26,17 @@
                             Style="{ThemeResource SubtitleTextBlockStyle}"
                             Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Title, Mode=OneWay}" />
 
+                        <ProgressBar
+                            x:Name="PART_ScanningProgressBar"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Width="300"
+                            HorizontalAlignment="Left"
+                            IsIndeterminate="True"
+                            ShowError="False"
+                            ShowPaused="False"
+                            Visibility="Collapsed" />
+
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="1"

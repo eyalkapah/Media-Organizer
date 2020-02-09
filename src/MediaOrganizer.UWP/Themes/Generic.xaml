@@ -23,6 +23,8 @@
                             Margin="8,0"
                             VerticalAlignment="Top"
                             Text="{TemplateBinding Text}" />
+                        
+                        
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>

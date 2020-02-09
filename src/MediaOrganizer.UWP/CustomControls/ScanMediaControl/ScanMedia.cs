@@ -18,6 +18,9 @@ namespace MediaOrganizer.UWP.CustomControls.ScanMediaControl
     [TemplatePart(Name = ScanMediaButtonPart, Type = typeof(Button))]
     public sealed class ScanMedia : Control
     {
+        private const string ScanningProgressBar = "PART_ScanningProgressBar";
+        private const string ScanMediaButtonPart = "PART_ScanMediaButton";
+
         public static readonly DependencyProperty ImageSourceUriProperty =
                     DependencyProperty.Register("ImageSourceUri", typeof(Uri), typeof(ScanMedia), new PropertyMetadata(default));
 
@@ -35,8 +38,6 @@ namespace MediaOrganizer.UWP.CustomControls.ScanMediaControl
 
         public static readonly DependencyProperty UpToDateImageProperty =
             DependencyProperty.Register("UpToDateImage", typeof(string), typeof(ScanMedia), new PropertyMetadata(default));
-
-        private const string ScanMediaButtonPart = "PART_ScanMediaButton";
 
         private Dictionary<ScanStatus, Uri> _scanStatusMap = new Dictionary<ScanStatus, Uri>
         {
@@ -57,6 +58,8 @@ namespace MediaOrganizer.UWP.CustomControls.ScanMediaControl
             get => (Uri)GetValue(ImageSourceUriProperty);
             set => SetValue(ImageSourceUriProperty, value);
         }
+
+        private ProgressBar _progressBar;
 
         public ICommand ScanMediaCommand
         {
@@ -99,6 +102,8 @@ namespace MediaOrganizer.UWP.CustomControls.ScanMediaControl
 
             ImageSourceUri = _scanStatusMap[ScanStatus.Idle];
 
+            _progressBar = GetTemplateChild(ScanningProgressBar) as ProgressBar;
+
             var button = GetTemplateChild(ScanMediaButtonPart) as Button;
 
             button.Tapped += ScanMediaButton_Tapped;
@@ -111,6 +116,9 @@ namespace MediaOrganizer.UWP.CustomControls.ScanMediaControl
             var sender = d as ScanMedia;
 
             sender.SetImage(status);
+
+            if (sender._progressBar != null)
+                sender._progressBar.Visibility = status == ScanStatus.Scanning ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void ScanMediaButton_Tapped(object sender, TappedRoutedEventArgs e)
